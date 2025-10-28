@@ -62,7 +62,7 @@
       color: #fff;
     }
 
-    .btn {
+    .demo-btn {
       display: inline-block;
       margin: 8px;
       padding: 12px 28px;
@@ -70,26 +70,28 @@
       font-weight: 600;
       text-decoration: none;
       transition: 0.3s ease;
+      border: none;
+      cursor: pointer;
     }
 
-    .btn-yellow {
+    .demo-btn.yellow {
       background: #ffd43b;
       color: #000;
       box-shadow: 0 4px 12px rgba(255, 200, 0, 0.3);
     }
 
-    .btn-yellow:hover {
+    .demo-btn.yellow:hover {
       background: #ffe37b;
       transform: scale(1.05);
     }
 
-    .btn-blue {
+    .demo-btn.outline {
       background: rgba(255,255,255,0.12);
       color: #fff;
       border: 1px solid rgba(255,255,255,0.2);
     }
 
-    .btn-blue:hover {
+    .demo-btn.outline:hover {
       background: rgba(255,255,255,0.2);
     }
 
@@ -100,6 +102,48 @@
       font-size: 14px;
       padding-bottom: 30px;
     }
+
+    /* Video Modal */
+    #videoModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #videoModal .video-box {
+      width: 100%;
+      max-width: 900px;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #videoModal iframe {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      border: none;
+    }
+
+    #closeVideo {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      z-index: 10;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -112,21 +156,65 @@
   <main>
     <div class="panel">
       <h2>TasTik Demo</h2>
-      <p>Quick preview — click Play Demo to open the full demo modal.</p>
-      <a href="https://youtu.be/your30secVideoID" class="btn btn-yellow">▶ Watch Demo (30s)</a>
-      <a href="https://youtu.be/your3minVideoID" class="btn btn-blue">🍽️ Full Demo (3min)</a>
+      <p>Quick preview — click a button to open video.</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+        <button class="demo-btn yellow" data-video="B5EglFm4K44" data-start="0" data-end="30">▶ Watch Demo (30s)</button>
+        <button class="demo-btn outline" data-video="HbVuydKK2bk" data-start="0" data-end="180">🍽 Full Demo (3min)</button>
+        <a href="https://brainstorm.pinet.com/project/68e606532c54f1d89eca44ec" target="_blank" class="demo-btn yellow">💡 View Brainstorm</a>
+      </div>
     </div>
 
     <div class="panel">
       <h2>Join the Pi Network</h2>
       <p>Be part of the Pi-powered halal ecosystem and explore spiritual + ethical apps.</p>
-      <a href="https://minepi.com" class="btn btn-yellow">🌙 Join Pi Network</a>
-      <a href="https://developers.minepi.com" class="btn btn-blue">👨‍💻 Developer Portal</a>
+      <a href="https://minepi.com" class="demo-btn yellow">🌙 Join Pi Network</a>
+      <a href="https://developers.minepi.com" class="demo-btn outline">👨‍💻 Developer Portal</a>
     </div>
   </main>
 
   <footer>
     © 2025 TasTik • Built for Pi Hackathon 2025 · Designed by Sajidul Ahmed 🌙
   </footer>
+
+  <!-- Video Modal -->
+  <div id="videoModal">
+    <div class="video-box">
+      <button id="closeVideo">✕</button>
+      <div style="padding-top:56.25%; position:relative;">
+        <iframe id="demoIframe" allow="autoplay; encrypted-media" allowfullscreen src=""></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function buildYouTubeEmbed(id, start, end) {
+      return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&start=${start || 0}${end ? '&end=' + end : ''}&rel=0&modestbranding=1`;
+    }
+
+    document.querySelectorAll('.demo-btn[data-video]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.dataset.video;
+        const start = this.dataset.start || 0;
+        const end = this.dataset.end || '';
+        const iframe = document.getElementById('demoIframe');
+        iframe.src = buildYouTubeEmbed(id, start, end);
+        document.getElementById('videoModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    document.getElementById('closeVideo').addEventListener('click', () => {
+      const iframe = document.getElementById('demoIframe');
+      iframe.src = '';
+      document.getElementById('videoModal').style.display = 'none';
+      document.body.style.overflow = '';
+    });
+
+    document.getElementById('videoModal').addEventListener('click', function(e){
+      if (e.target === this) {
+        document.getElementById('closeVideo').click();
+      }
+    });
+  </script>
 </body>
-        </html>
+</html>
