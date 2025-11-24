@@ -177,39 +177,42 @@
   </footer>
 <!-- Pi Payment Button -->
 <div style="text-align:center; margin-top: 30px;">
-  <button 
-    id="payWithPiBtn" 
+  <button
+    id="payWithPiBtn"
     style="
-      background:#ffcc00; 
-      padding:15px 25px; 
-      font-size:18px; 
-      border-radius:12px; 
-      border:none; 
+      background:#ffcc00;
+      padding:15px 25px;
+      font-size:18px;
+      border-radius:12px;
+      border:none;
       font-weight:bold;
       cursor:pointer;
       box-shadow:0 0 15px rgba(255,204,0,0.4);
-    ">
+    "
+  >
     🍽 Pay 0.01 Pi (Test)
   </button>
 </div>
 
+<!-- Pi SDK -->
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
 <script>
-  Pi.init({ version: "2.0", sandbox: true });
+Pi.init({ version: "2.0", sandbox: true });
 
-  document.getElementById("payWithPiBtn").addEventListener("click", async () => {
-    try {
-      const payment = await Pi.createPayment({
-        amount: 0.01,
-        memo: "TasTik Demo Payment",
-        metadata: { type: "test-payment" }
-      });
+document.getElementById("payWithPiBtn").addEventListener("click", async () => {
+  try {
+    const payment = await Pi.createPayment({
+      amount: 0.01,
+      memo: "TasTik Demo Payment",
+      metadata: { type: "test-payment" }
+    });
 
-      console.log("Payment popup opened:", payment);
-    } catch (err) {
-      console.error("Payment error:", err);
-    }
-  });
+    console.log("Payment popup opened:", payment);
+  } catch (err) {
+    console.error("Payment error:", err);
+  }
+});
 </script>
   <!-- Video Modal -->
   <div id="videoModal">
